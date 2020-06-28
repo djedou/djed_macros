@@ -1,0 +1,18 @@
+[package]
+name = "djed_macros"
+version = "0.1.0"
+authors = ["djedou"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+proc-macro = true
+
+[dependencies]
+boolinator = "2.4.0"
+lazy_static = "1.3.0"
+proc-macro-hack = "0.5"
+proc-macro2 = "1.0"
+quote = "1.0"
+syn = { version = "1.0", features = ["full", "extra-traits"] }
