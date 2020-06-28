@@ -109,7 +109,7 @@ impl ToTokens for HtmlTag {
             }
             TagName::Expr(name) => {
                 let expr = &name.expr;
-                let vtag_name = Ident::new("__yew_vtag_name", expr.span());
+                let vtag_name = Ident::new("__djed_vtag_name", expr.span());
                 // this way we get a nice error message (with the correct span) when the expression doesn't return a valid value
                 quote_spanned! {expr.span()=> {
                     let mut #vtag_name = ::std::borrow::Cow::<'static, str>::from(#expr);
@@ -136,7 +136,7 @@ impl ToTokens for HtmlTag {
             listeners,
         } = &attributes;
 
-        let vtag = Ident::new("__yew_vtag", tag_name.span());
+        let vtag = Ident::new("__djed_vtag", tag_name.span());
         let attr_pairs = attributes.iter().map(|TagAttribute { label, value }| {
             let label_str = label.to_string();
             quote_spanned! {value.span()=> (#label_str.to_owned(), (#value).to_string()) }
@@ -157,8 +157,8 @@ impl ToTokens for HtmlTag {
         });
         let add_href = href.iter().map(|href| {
             quote_spanned! {href.span()=>
-                let __yew_href: ::yew::html::Href = (#href).into();
-                #vtag.add_attribute("href", &__yew_href);
+                let __djed_href: ::djed::djed::Href = (#href).into();
+                #vtag.add_attribute("href", &__djed_href);
             }
         });
         let set_checked = checked.iter().map(|checked| {
@@ -166,15 +166,15 @@ impl ToTokens for HtmlTag {
         });
         let set_classes = classes.iter().map(|classes_form| match classes_form {
             ClassesForm::Tuple(classes) => quote! {
-                let __yew_classes = ::yew::virtual_dom::Classes::default()#(.extend(#classes))*;
-                if !__yew_classes.is_empty() {
-                    #vtag.add_attribute("class", &__yew_classes);
+                let __djed_classes = ::djed::djed_dom::Classes::default()#(.extend(#classes))*;
+                if !__djed_classes.is_empty() {
+                    #vtag.add_attribute("class", &__djed_classes);
                 }
             },
             ClassesForm::Single(classes) => quote! {
-                let __yew_classes = ::std::convert::Into::<::yew::virtual_dom::Classes>::into(#classes);
-                if !__yew_classes.is_empty() {
-                    #vtag.add_attribute("class", &__yew_classes);
+                let __djed_classes = ::std::convert::Into::<::djed::djed_dom::Classes>::into(#classes);
+                if !__djed_classes.is_empty() {
+                    #vtag.add_attribute("class", &__djed_classes);
                 }
             },
         });
@@ -193,8 +193,8 @@ impl ToTokens for HtmlTag {
             let callback = &listener.value;
 
             quote_spanned! {name.span()=> {
-                ::yew::html::#name::Wrapper::new(
-                    <::yew::virtual_dom::VTag as ::yew::virtual_dom::Transformer<_, _>>::transform(
+                ::djed::djed::#name::Wrapper::new(
+                    <::djed::djed_dom::VTag as ::djed::djed_dom::Transformer<_, _>>::transform(
                         #callback
                     )
                 )
@@ -204,7 +204,7 @@ impl ToTokens for HtmlTag {
         // These are the runtime-checks exclusive to dynamic tags.
         // For literal tags this is already done at compile-time.
         let dyn_tag_runtime_checks = if matches!(&tag_name, TagName::Expr(_)) {
-            // when Span::source_file Span::start get stabilised or yew-macro introduces a nightly feature flag
+            // when Span::source_file Span::start get stabilised or djed-macro introduces a nightly feature flag
             // we should expand the panic message to contain the exact location of the dynamic tag.
             Some(quote! {
                 // check void element
@@ -233,7 +233,7 @@ impl ToTokens for HtmlTag {
         };
 
         tokens.extend(quote! {{
-            let mut #vtag = ::yew::virtual_dom::VTag::new(#name);
+            let mut #vtag = ::djed::djed_dom::VTag::new(#name);
             #(#set_kind)*
             #(#set_value)*
             #(#add_href)*
@@ -246,7 +246,7 @@ impl ToTokens for HtmlTag {
             #vtag.add_listeners(vec![#(::std::rc::Rc::new(#listeners)),*]);
             #vtag.add_children(#children);
             #dyn_tag_runtime_checks
-            ::yew::virtual_dom::VNode::from(#vtag)
+            ::djed::virtual_dom::VNode::from(#vtag)
         }});
     }
 }

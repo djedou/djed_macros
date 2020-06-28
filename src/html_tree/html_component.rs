@@ -99,7 +99,7 @@ impl ToTokens for HtmlComponent {
             };
 
             quote! {
-                let _ = |props: <#ty as ::yew::html::Component>::Properties| {
+                let _ = |props: <#ty as ::djed::djed::Component>::Props| {
                     #check_children
                     #(#check_props)*
                 };

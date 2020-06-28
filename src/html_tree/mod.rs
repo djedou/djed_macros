@@ -132,7 +132,7 @@ impl ToTokens for HtmlRootVNode {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let new_tokens = self.0.to_token_stream();
         tokens.extend(quote! {
-            ::yew::virtual_dom::VNode::from(#new_tokens)
+            ::djed::djed_dom::VNode::from(#new_tokens)
         });
     }
 }
@@ -190,7 +190,7 @@ impl HtmlChildrenTree {
             };
         }
 
-        let vec_ident = Ident::new("__yew_v", Span::call_site());
+        let vec_ident = Ident::new("__djed_v", Span::call_site());
         let add_children_streams = children.iter().map(|child| {
             if let Some(node_iterator_stream) = child.to_node_iterator_stream() {
                 quote! {

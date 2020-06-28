@@ -1,4 +1,4 @@
-//! This crate provides Yew's procedural macro `html!` which allows using JSX-like syntax
+//! This crate provides Djed's procedural macro `html!` which allows using JSX-like syntax
 //! for generating html and the `Properties` derive macro for deriving the `Properties` trait
 //! for components.
 //!
@@ -6,8 +6,8 @@
 //! to be used in the expression position.
 //!
 //! ```
-//! # #[macro_use] extern crate yew;
-//! use yew::prelude::*;
+//! # #[macro_use] extern crate djed;
+//! use djed::prelude::*;
 //!
 //! struct Component {
 //!   link: ComponentLink<Self>,
@@ -20,7 +20,7 @@
 //!
 //! # enum Msg { Submit }
 //! #
-//! # impl yew::Component for Component {
+//! # impl djed::Component for Component {
 //! #     type Message = Msg;
 //! #     type Properties = Props;
 //! #     fn create(_: Self::Properties, _: ComponentLink<Self>) -> Self {
@@ -57,7 +57,7 @@
 //! # fn main() {}
 //! ```
 //!
-//! Please refer to [https://github.com/yewstack/yew](https://github.com/yewstack/yew) for how to set this up.
+
 
 #![recursion_limit = "128"]
 extern crate proc_macro;
