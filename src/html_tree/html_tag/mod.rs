@@ -246,7 +246,7 @@ impl ToTokens for HtmlTag {
             #vtag.add_listeners(vec![#(::std::rc::Rc::new(#listeners)),*]);
             #vtag.add_children(#children);
             #dyn_tag_runtime_checks
-            ::djed::virtual_dom::VNode::from(#vtag)
+            ::djed::djed_dom::VNode::from(#vtag)
         }});
     }
 }
