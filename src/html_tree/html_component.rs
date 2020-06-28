@@ -110,7 +110,7 @@ impl ToTokens for HtmlComponent {
 
         let set_children = if !children.is_empty() {
             quote! {
-                .children(::yew::html::ChildrenRenderer::new(#children))
+                .children(::djed::djed::ChildrenRenderer::new(#children))
             }
         } else {
             quote! {}
@@ -120,14 +120,14 @@ impl ToTokens for HtmlComponent {
             PropType::List(list_props) => {
                 let set_props = list_props.iter().map(|HtmlProp { label, value }| {
                     quote_spanned! { value.span()=> .#label(
-                        <::yew::virtual_dom::VComp as ::yew::virtual_dom::Transformer<_, _>>::transform(
+                        <::djed::djed_dom::VComp as ::djed::djed_dom::Transformer<_, _>>::transform(
                             #value
                         )
                     )}
                 });
 
                 quote! {
-                    <<#ty as ::yew::html::Component>::Properties as ::yew::html::Properties>::builder()
+                    <<#ty as ::djed::djed::Component>::Props as ::djed::djed::Props>::builder()
                         #(#set_props)*
                         #set_children
                         .build()
@@ -137,7 +137,7 @@ impl ToTokens for HtmlComponent {
                 quote! { #props }
             }
             PropType::None => quote! {
-                <<#ty as ::yew::html::Component>::Properties as ::yew::html::Properties>::builder()
+                <<#ty as ::djed::djed::Component>::Props as ::djed::djed::Props>::builder()
                     #set_children
                     .build()
             },
@@ -146,7 +146,7 @@ impl ToTokens for HtmlComponent {
         let node_ref = if let Some(node_ref) = &props.node_ref {
             quote_spanned! { node_ref.span()=> #node_ref }
         } else {
-            quote! { ::yew::html::NodeRef::default() }
+            quote! { ::djed::djed::NodeRef::default() }
         };
 
         let key = if let Some(key) = &props.key {
@@ -162,7 +162,7 @@ impl ToTokens for HtmlComponent {
                 #validate_props
             }
 
-            ::yew::virtual_dom::VChild::<#ty>::new(#init_props, #node_ref, #key)
+            ::djed::djed_dom::VChild::<#ty>::new(#init_props, #node_ref, #key)
         }});
     }
 }

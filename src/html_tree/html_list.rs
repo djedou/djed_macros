@@ -74,8 +74,8 @@ impl ToTokens for HtmlList {
             quote! {None}
         };
         tokens.extend(quote! {
-            ::yew::virtual_dom::VNode::VList(
-                ::yew::virtual_dom::VList::new_with_children(#children, #key)
+            ::djed::djed_dom::VNode::VList(
+                ::djed::djed_dom::VList::new_with_children(#children, #key)
             )
         });
     }
